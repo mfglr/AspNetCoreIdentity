@@ -10,12 +10,13 @@ namespace AspNetCoreIdentity.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
 
-
-        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager)
+        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _logger = logger;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public IActionResult Index()
@@ -33,15 +34,6 @@ namespace AspNetCoreIdentity.Controllers
         {
             return View();
         }
-
-        public IActionResult SignIn()
-        {
-
-
-
-            return View();
-        }
-
 
         [HttpPost]
         public async Task<IActionResult> SignUp(SingUpViewModel request)
@@ -67,10 +59,41 @@ namespace AspNetCoreIdentity.Controllers
 
             foreach(var item in result.Errors)
             {
-                ModelState.AddModelError(String.Empty, item.Description);
+                ModelState.AddModelError(item.Code, item.Description);
             }
             return View();
         }
+
+
+        public IActionResult SignIn()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> SingIn(SignInViewModel request,string? returnUrl = null)
+        {
+            if (!ModelState.IsValid) return View();
+
+            returnUrl = returnUrl ?? Url.Action("Index", "Home");
+
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError("UserNotFound", "User not found");
+                return View();
+            }
+            var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, false);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("FailSingIn", "Email or password is wrong!");
+                return View();
+            }
+            return Redirect(returnUrl);
+        }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
