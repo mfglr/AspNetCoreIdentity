@@ -1,3 +1,4 @@
+using AspNetCoreIdentity.Extentions;
 using AspNetCoreIdentity.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,9 +10,8 @@ builder.Services
     .AddDbContext<AppDbContext>(
         options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))
     )
-    .AddIdentity<AppUser,AppRole>()
-    .AddEntityFrameworkStores<AppDbContext>();
-
+    .AddCustomIdentity();
+    
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
