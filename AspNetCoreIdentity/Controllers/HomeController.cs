@@ -73,7 +73,7 @@ namespace AspNetCoreIdentity.Controllers
         {
             if (!ModelState.IsValid) return View();
 
-            returnUrl = returnUrl ?? Url.Action("Index", "Home");
+            returnUrl = returnUrl ?? Url.Action("Index","Member");
 
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
