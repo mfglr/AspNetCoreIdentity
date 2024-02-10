@@ -8,12 +8,22 @@
 
 
 
+
+
 <div class="row">
     <div class="col-md-6 offset-md-3">
         
+        @if (TempData["SuccedMessage"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["SuccedMessage"]
+            </div>
+        }
+
+
         <h2>SignUp</h2>
 
-        <form>
+        <form asp-controller="Home" asp-action="SignUp" method="post">
             <div class="row mb-3">
                 <label for="UserName" class="col-md-4 col-form-label" asp-for="UserName"></label>
                 <div class="col-md-8">

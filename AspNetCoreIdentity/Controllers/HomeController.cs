@@ -1,4 +1,6 @@
 ﻿using AspNetCoreIdentity.Models;
+using AspNetCoreIdentity.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,10 +9,13 @@ namespace AspNetCoreIdentity.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<AppUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager)
         {
             _logger = logger;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -26,6 +31,29 @@ namespace AspNetCoreIdentity.Controllers
 
         public IActionResult SignUp()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SignUp(SingUpViewModel request)
+        {
+            var result = await _userManager.CreateAsync(new AppUser()
+            {
+                UserName = request.UserName,
+                Email = request.Email,
+                PhoneNumber = request.Phone
+            }, request.Password);
+
+            if (result.Succeeded)
+            {
+                TempData["SuccedMessage"] = "Sing Up Success";
+                return RedirectToAction(nameof(HomeController.SignUp));
+            }
+
+            foreach(var item in result.Errors)
+            {
+                ModelState.AddModelError(String.Empty, item.Description);
+            }
             return View();
         }
 
