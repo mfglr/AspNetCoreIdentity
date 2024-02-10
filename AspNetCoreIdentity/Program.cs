@@ -21,6 +21,7 @@ builder.Services.ConfigureApplicationCookie(
             Name = "IdentityCookie"
         };
         opt.LoginPath = "/Home/SignIn";
+        opt.LogoutPath = "/Member/Logout";
         opt.ExpireTimeSpan = TimeSpan.FromDays(60);
         opt.SlidingExpiration = true;
         
