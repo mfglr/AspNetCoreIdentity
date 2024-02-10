@@ -20,6 +20,10 @@ namespace AspNetCoreIdentity.Extentions
                         opt.Password.RequireUppercase = true;
                         opt.Password.RequireNonAlphanumeric = true;
                         opt.Password.RequireDigit = false;
+
+                        opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
+                        opt.Lockout.MaxFailedAccessAttempts = 3;
+
                     }
                 )
                 .AddPasswordValidator<PasswordValidator>()

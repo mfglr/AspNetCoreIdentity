@@ -52,14 +52,11 @@ namespace AspNetCoreIdentity.Controllers
             );
 
             if (result.Succeeded)
-            {
-                TempData["SuccedMessage"] = "Sing Up Success";
-                return RedirectToAction(nameof(HomeController.SignUp));
-            }
+                return RedirectToAction(nameof(HomeController.SignIn));
 
             foreach(var item in result.Errors)
             {
-                ModelState.AddModelError(item.Code, item.Description);
+                ModelState.AddModelError(String.Empty, item.Description);
             }
             return View();
         }
@@ -72,7 +69,7 @@ namespace AspNetCoreIdentity.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> SingIn(SignInViewModel request,string? returnUrl = null)
+        public async Task<IActionResult> SignIn(SignInViewModel request,string? returnUrl = null)
         {
             if (!ModelState.IsValid) return View();
 
@@ -81,16 +78,21 @@ namespace AspNetCoreIdentity.Controllers
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
             {
-                ModelState.AddModelError("UserNotFound", "User not found");
+                ModelState.AddModelError(String.Empty, "User not found");
                 return View();
             }
-            var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, false);
-            if (!result.Succeeded)
+            var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
+            
+
+            if(result.Succeeded) return Redirect(returnUrl);
+            else
             {
-                ModelState.AddModelError("FailSingIn", "Email or password is wrong!");
-                return View();
+                if (result.IsLockedOut)
+                    ModelState.AddModelError(String.Empty, "You must try to singin after 3 minutes!");
+                else
+                    ModelState.AddModelError(String.Empty, "Email or password is wrong!");
             }
-            return Redirect(returnUrl);
+            return View();
         }
 
 
