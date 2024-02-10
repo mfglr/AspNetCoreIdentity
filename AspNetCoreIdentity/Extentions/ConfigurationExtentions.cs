@@ -22,6 +22,7 @@ namespace AspNetCoreIdentity.Extentions
                     }
                 )
                 .AddPasswordValidator<PasswordValidator>()
+                .AddUserValidator<UserValidator>()
                 .AddEntityFrameworkStores<AppDbContext>();
             return services;
         }
