@@ -40,12 +40,15 @@ namespace AspNetCoreIdentity.Controllers
 
             if(!ModelState.IsValid) return View();
 
-            var result = await _userManager.CreateAsync(new AppUser()
-            {
-                UserName = request.UserName,
-                Email = request.Email,
-                PhoneNumber = request.Phone
-            }, request.Password);
+            var result = await _userManager.CreateAsync(
+                new AppUser()
+                {
+                    UserName = request.UserName,
+                    Email = request.Email,
+                    PhoneNumber = request.Phone
+                },
+                request.Password
+            );
 
             if (result.Succeeded)
             {

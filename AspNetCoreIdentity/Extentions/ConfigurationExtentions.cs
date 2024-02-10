@@ -1,4 +1,5 @@
-﻿using AspNetCoreIdentity.Models;
+﻿using AspNetCoreIdentity.CustomValidators;
+using AspNetCoreIdentity.Models;
 
 namespace AspNetCoreIdentity.Extentions
 {
@@ -20,6 +21,7 @@ namespace AspNetCoreIdentity.Extentions
                         opt.Password.RequireDigit = false;
                     }
                 )
+                .AddPasswordValidator<PasswordValidator>()
                 .AddEntityFrameworkStores<AppDbContext>();
             return services;
         }
