@@ -1,4 +1,5 @@
 ﻿using AspNetCoreIdentity.CustomValidators;
+using AspNetCoreIdentity.Localization;
 using AspNetCoreIdentity.Models;
 
 namespace AspNetCoreIdentity.Extentions
@@ -23,6 +24,7 @@ namespace AspNetCoreIdentity.Extentions
                 )
                 .AddPasswordValidator<PasswordValidator>()
                 .AddUserValidator<UserValidator>()
+                .AddErrorDescriber<TurkishIdentityErrorDescriber>()
                 .AddEntityFrameworkStores<AppDbContext>();
             return services;
         }
