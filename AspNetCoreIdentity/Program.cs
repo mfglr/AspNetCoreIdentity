@@ -11,7 +11,22 @@ builder.Services
         options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))
     )
     .AddCustomIdentity();
-    
+
+builder.Services.ConfigureApplicationCookie(
+    opt =>
+    {
+
+        opt.Cookie = new CookieBuilder()
+        {
+            Name = "IdentityCookie"
+        };
+        opt.LoginPath = "/Home/SignIn";
+        opt.ExpireTimeSpan = TimeSpan.FromDays(60);
+        opt.SlidingExpiration = true;
+        
+    }
+);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
