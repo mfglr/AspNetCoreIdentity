@@ -29,11 +29,13 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+
+
+                    <ul class="navbar-nav">
+                        <partial name="_NavbarLogin" />
+                    </ul>
+
                 </div>
-
-
-                <a asp-controller="Home" asp-action="SignIn" class="btn btn-outline-primary mx-1">Sign In</a>
-                <a asp-controller="Home" asp-action="SignUp" class="btn btn-outline-primary">Sign Up</a>
 
             </div>
         </nav>

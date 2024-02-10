@@ -1,0 +1,20 @@
+﻿@if (Context.User.Identity != null && Context.User.Identity.IsAuthenticated)
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            @Context.User.Identity.Name
+        </a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Logout    </a></li>
+        </ul>
+    </li>
+}
+else
+{
+    <li>
+        <a asp-controller="Home" asp-action="SignIn" class="btn btn-outline-primary mx-1">Sign In</a>
+    </li>
+    <li>
+        <a asp-controller="Home" asp-action="SignUp" class="btn btn-outline-primary">Sign Up</a>
+    </li>
+}
