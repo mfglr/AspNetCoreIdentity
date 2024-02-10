@@ -37,6 +37,9 @@ namespace AspNetCoreIdentity.Controllers
         [HttpPost]
         public async Task<IActionResult> SignUp(SingUpViewModel request)
         {
+
+            if(!ModelState.IsValid) return View();
+
             var result = await _userManager.CreateAsync(new AppUser()
             {
                 UserName = request.UserName,
