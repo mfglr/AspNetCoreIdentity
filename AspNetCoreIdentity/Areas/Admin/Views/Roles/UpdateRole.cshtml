@@ -1,0 +1,46 @@
+﻿@using AspNetCoreIdentity.Areas.Admin.ViewModels;
+
+@{
+    ViewData["Title"] = "AddRole";
+}
+@model UpdateRoleViewModel
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <form asp-action="UpdateRole" method="post">
+
+            <h3>Add Role</h3>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3">
+                <div>
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <input type="submit" value="Edit" class="btn btn-primary" />
+                </div>
+            </div>
+
+        </form>
+
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+

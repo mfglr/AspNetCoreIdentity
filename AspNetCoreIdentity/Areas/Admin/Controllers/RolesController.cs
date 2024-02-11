@@ -52,5 +52,44 @@ namespace AspNetCoreIdentity.Areas.Admin.Controllers
             }
             return RedirectToAction(nameof(RolesController.Index));
         }
+
+        public async Task<IActionResult> UpdateRole(string id)
+        {
+            var role = await _roleManager.FindByIdAsync(id);
+
+            if (role == null)
+            {
+                ModelState.AddModelError(string.Empty, "Role not found");
+                return View();
+            }
+
+            return View(new UpdateRoleViewModel() { Id = role.Id,Name = role.Name });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateRole(UpdateRoleViewModel request)
+        {
+            if (!ModelState.IsValid) return View();
+
+
+            var role = await _roleManager.FindByIdAsync(request.Id);
+
+            if (role == null)
+            {
+                ModelState.AddModelError(string.Empty, "Role not found");
+                return View();
+            }
+
+            role.Name = request.Name;
+
+            await _roleManager.UpdateAsync(role);
+
+            return RedirectToAction(nameof(RolesController.Index));
+
+
+
+        }
+
+
     }
 }
