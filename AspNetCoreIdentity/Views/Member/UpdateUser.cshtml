@@ -1,0 +1,75 @@
+﻿@using AspNetCoreIdentity.ViewModels;
+
+@{
+    ViewData["Title"] = "UpdateUser";
+}
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+@model UserEditViewModel
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+
+        <h2>Update User</h2>
+
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+        <form method="post" enctype="multipart/form-data">
+
+            <div class="mb-3">
+                <label for="Email" class="form-label" asp-for="Email"></label>
+                <input class="form-control" asp-for="Email">
+                <span class="text-danger" asp-validation-for="Email"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="UserName" class="form-label" asp-for="UserName"></label>
+                <input class="form-control" asp-for="UserName">
+                <span class="text-danger" asp-validation-for="UserName"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="Phone" class="form-label" asp-for="Phone"></label>
+                <input class="form-control" asp-for="Phone">
+                <span class="text-danger" asp-validation-for="Phone"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="UserName" class="form-label" asp-for="City" ></label>
+                <input class="form-control" asp-for="City">
+                <span class="text-danger" asp-validation-for="City"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="UserName" class="form-label" asp-for="Picture"></label>
+                <input type="file" class="form-control" asp-for="Picture">
+                <span class="text-danger" asp-validation-for="Picture"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="UserName" class="form-label" asp-for="BirthDay"></label>
+                <input class="form-control" asp-for="BirthDay">
+                <span class="text-danger" asp-validation-for="BirthDay"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="UserName" class="form-label" asp-for="Gender"></label>
+                <select class="form-control" asp-for="Gender">
+                    <option value="">Select Gender</option>
+                    <option value="true">Woman</option>
+                    <option value="false">Man</option>
+                </select>
+                <span class="text-danger" asp-validation-for="Gender"></span>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Update</button>
+
+        </form>
+
+    </div>
+</div>
+
+

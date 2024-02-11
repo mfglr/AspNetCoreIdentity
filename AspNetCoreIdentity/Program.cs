@@ -3,6 +3,7 @@ using AspNetCoreIdentity.Extentions;
 using AspNetCoreIdentity.Models;
 using AspNetCoreIdentity.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
@@ -29,6 +30,8 @@ builder.Services.AddSingleton(
     }
 );
 builder.Services.AddSingleton<IEmailService, EmailService>();
+
+builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Directory.GetCurrentDirectory()));
 
 builder.Services.AddControllersWithViews();
 builder.Services
