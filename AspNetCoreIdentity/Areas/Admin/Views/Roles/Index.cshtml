@@ -14,6 +14,7 @@
             <th>Role Id</th>
             <th>Role Name</th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +26,11 @@
                 <td>
                     <a class="btn btn-warning btn-sm" asp-area="admin" asp-controller="Roles" asp-action="UpdateRole" asp-route-id="@role.Id">
                         Edit
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-danger btn-sm" asp-area="admin" asp-controller="Roles" asp-action="DeleteRole" asp-route-id="@role.Id">
+                        Delete
                     </a>
                 </td>
             </tr>

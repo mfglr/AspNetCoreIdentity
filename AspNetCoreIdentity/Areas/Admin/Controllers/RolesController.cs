@@ -1,5 +1,6 @@
 ﻿using AspNetCoreIdentity.Areas.Admin.ViewModels;
 using AspNetCoreIdentity.Models;
+using Azure.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -85,11 +86,23 @@ namespace AspNetCoreIdentity.Areas.Admin.Controllers
             await _roleManager.UpdateAsync(role);
 
             return RedirectToAction(nameof(RolesController.Index));
-
-
-
         }
 
+
+        public async Task<IActionResult> DeleteRole(string id)
+        {
+            var role = await _roleManager.FindByIdAsync(id);
+
+            if (role == null)
+            {
+                throw new Exception("error");
+            }
+
+            await _roleManager.DeleteAsync(role);
+            
+            return RedirectToAction(nameof(RolesController.Index));
+
+        }
 
     }
 }
