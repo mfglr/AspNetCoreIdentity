@@ -1,7 +1,9 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
 }
+@model List<AppRole>
 
-<h1>Index</h1>
 
+<h1>All Roles</h1>
+
+<a class="btn btn-primary" asp-controller="Roles" asp-action="AddRole" asp-area="Admin">Add Role</a>
