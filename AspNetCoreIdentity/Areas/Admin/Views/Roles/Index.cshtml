@@ -1,9 +1,32 @@
 ﻿@{
     ViewData["Title"] = "Index";
 }
-@model List<AppRole>
+@model List<RoleViewModel>
 
 
 <h1>All Roles</h1>
 
 <a class="btn btn-primary" asp-controller="Roles" asp-action="AddRole" asp-area="Admin">Add Role</a>
+
+<table class="table" >
+    <thead>
+        <tr>
+            <th>Role Id</th>
+            <th>Role Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var role in Model)
+        {
+            <tr>
+                <td>@role.Id</td>
+                <td>@role.Name</td>
+            </tr>
+        }
+
+    </tbody>
+
+
+
+</table>
+

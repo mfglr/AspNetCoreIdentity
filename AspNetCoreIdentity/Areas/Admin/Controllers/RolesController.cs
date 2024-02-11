@@ -21,7 +21,13 @@ namespace AspNetCoreIdentity.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var roles = await _roleManager.Roles.ToListAsync();
+            var roles = await _roleManager.Roles.Select(x => new RoleViewModel()
+            {
+                Id = x.Id,
+                Name = x.Name
+            }).ToListAsync();
+
+
             return View(roles);
         }
 
