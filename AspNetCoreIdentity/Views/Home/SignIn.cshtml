@@ -31,11 +31,22 @@
                 <span class="text-danger" asp-validation-for="Password"></span>
             </div>
 
-            <div class="mb-3 form-check">
-                <input class="form-check-input" asp-for="RememberMe">
-                <label class="form-check-label" for="RememberMe" asp-for="RememberMe"></label>
-            </div>
 
+            <div class="mb-3" style="display : flex;justify-content : space-between; align-items : center">
+                
+                <div class="mb-3 form-check">
+                    <input class="form-check-input" asp-for="RememberMe">
+                    <label class="form-check-label" for="RememberMe" asp-for="RememberMe"></label>
+                </div>
+
+                <div class="mb-3">
+                    <a class="btn btn-outline-secondary btn-sm" asp-controller="Home" asp-action="ForgetPassword">
+                        Forget Password
+                    </a>
+                </div>
+
+            </div>
+            
             <button type="submit" class="btn btn-primary">Sign In</button>
 
         </form>

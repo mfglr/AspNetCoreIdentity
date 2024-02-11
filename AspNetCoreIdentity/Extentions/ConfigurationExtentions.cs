@@ -1,6 +1,7 @@
 ﻿using AspNetCoreIdentity.CustomValidators;
 using AspNetCoreIdentity.Localization;
 using AspNetCoreIdentity.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AspNetCoreIdentity.Extentions
 {
@@ -9,6 +10,11 @@ namespace AspNetCoreIdentity.Extentions
 
         public static IServiceCollection AddCustomIdentity(this IServiceCollection services)
         {
+
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromHours(2);
+            });
             services
                 .AddIdentity<AppUser, AppRole>(
                     opt =>
@@ -23,13 +29,14 @@ namespace AspNetCoreIdentity.Extentions
 
                         opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
                         opt.Lockout.MaxFailedAccessAttempts = 3;
-
                     }
                 )
                 .AddPasswordValidator<PasswordValidator>()
                 .AddUserValidator<UserValidator>()
                 .AddErrorDescriber<TurkishIdentityErrorDescriber>()
-                .AddEntityFrameworkStores<AppDbContext>();
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
             return services;
         }
 

@@ -62,6 +62,31 @@ namespace AspNetCoreIdentity.Controllers
         }
 
 
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if(user == null)
+            {
+                ModelState.AddModelError(String.Empty, "User not found!");
+                return View();
+            }
+
+            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            string? resetLink = Url.Action("ResetPassword", "Home", new { userId = user.Id, token = token });
+
+
+
+            TempData["success"] = "Email has been sent your address.";
+            return RedirectToAction(nameof(ForgetPassword));
+
+        }
+
         public IActionResult SignIn()
         {
             return View();
