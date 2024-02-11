@@ -1,10 +1,35 @@
+using AspNetCoreIdentity.Configurations;
 using AspNetCoreIdentity.Extentions;
 using AspNetCoreIdentity.Models;
+using AspNetCoreIdentity.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.Net;
+using System.Net.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<EmailServiceSettings>(builder.Configuration.GetSection("EmailServiceSettings"));
+builder.Services.AddSingleton<IEmailServiceSettings>(
+    sp => sp.GetRequiredService<IOptions<EmailServiceSettings>>().Value
+);
+builder.Services.AddSingleton(
+    sp => {
+        var settings = sp.GetRequiredService<IEmailServiceSettings>();
+        return new SmtpClient()
+        {
+            Host = settings.Host,
+            Port = settings.Port,
+            DeliveryMethod = SmtpDeliveryMethod.Network,
+            UseDefaultCredentials = false,
+            Credentials = new NetworkCredential(settings.SenderMail, settings.Password),
+            EnableSsl = true
+        };
+    }
+);
+builder.Services.AddSingleton<IEmailService, EmailService>();
+
 builder.Services.AddControllersWithViews();
 builder.Services
     .AddDbContext<AppDbContext>(

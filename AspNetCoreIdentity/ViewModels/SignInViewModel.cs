@@ -11,11 +11,10 @@ namespace AspNetCoreIdentity.ViewModels
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [PasswordPropertyText]
         [Required]
+        [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
-
 
         [Display(Name = "Remember Me")]
         public bool RememberMe { get; set; }

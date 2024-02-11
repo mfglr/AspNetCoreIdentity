@@ -18,13 +18,13 @@ namespace AspNetCoreIdentity.ViewModels
         [Display(Name = "Phone")]
         public string Phone {  get; set; }
 
-        [PasswordPropertyText]
+        [DataType(DataType.Password)]
         [Required]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [Compare(nameof(Password))]
-        [PasswordPropertyText]
+        [DataType(DataType.Password)]
         [Required]
         [Display(Name = "Password confirm")]
         public string PasswordConfirm { get; set; }
