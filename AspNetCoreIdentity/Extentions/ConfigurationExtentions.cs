@@ -1,7 +1,10 @@
 ﻿using AspNetCoreIdentity.CustomValidators;
 using AspNetCoreIdentity.Localization;
 using AspNetCoreIdentity.Models;
+using AspNetCoreIdentity.Requirements;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace AspNetCoreIdentity.Extentions
 {
@@ -38,6 +41,28 @@ namespace AspNetCoreIdentity.Extentions
                 .AddDefaultTokenProviders();
 
             return services;
+        }
+
+        public static IServiceCollection AddPolicies(this IServiceCollection services)
+        {
+            return services
+                .AddAuthorization(
+                    opt =>
+                    {
+                        opt.AddPolicy(
+                            "BursaPolicy",
+                            policy => policy.RequireClaim(ClaimTypes.StateOrProvince, "Bursa")
+                        );
+
+                        opt.AddPolicy(
+                            "ExpireDateOfFreeAccess",
+                            policy => policy.AddRequirements(new ExpireDateRequirement())
+                        );
+
+                    }
+                )
+                .AddScoped<IAuthorizationHandler,ExpireDateRequirementHandler>();
+                
         }
 
     }

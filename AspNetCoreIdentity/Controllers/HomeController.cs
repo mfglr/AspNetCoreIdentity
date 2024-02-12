@@ -4,6 +4,7 @@ using AspNetCoreIdentity.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace AspNetCoreIdentity.Controllers
 {
@@ -48,21 +49,28 @@ namespace AspNetCoreIdentity.Controllers
         {
 
             if(!ModelState.IsValid) return View();
-
+            var user = new AppUser()
+            {
+                UserName = request.UserName,
+                Email = request.Email,
+                PhoneNumber = request.Phone
+            };
             var result = await _userManager.CreateAsync(
-                new AppUser()
-                {
-                    UserName = request.UserName,
-                    Email = request.Email,
-                    PhoneNumber = request.Phone
-                },
+                user,
                 request.Password
             );
 
             if (result.Succeeded)
-                return RedirectToAction(nameof(HomeController.SignIn));
+            {
 
-            foreach(var item in result.Errors)
+                await _userManager.AddClaimAsync(
+                    user,
+                    new Claim("ExpireDateOfFreeAccess", DateTime.Now.AddDays(10).ToString())
+                );
+                return RedirectToAction(nameof(HomeController.SignIn));
+            }
+
+            foreach (var item in result.Errors)
             {
                 ModelState.AddModelError(String.Empty, item.Description);
             }

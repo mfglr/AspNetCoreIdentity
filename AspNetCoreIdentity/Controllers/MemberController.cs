@@ -186,7 +186,7 @@ namespace AspNetCoreIdentity.Controllers
             return View(claims);
         }
 
-        [Authorize(Policy = "BursaPolicy")]
+        [Authorize(Policy = "ExpireDateOfFreeAccess")]
         public IActionResult BursaPage()
         {
             return View();

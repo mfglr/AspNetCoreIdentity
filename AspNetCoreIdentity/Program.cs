@@ -62,16 +62,7 @@ builder.Services.ConfigureApplicationCookie(
     }
 );
 
-
-builder.Services.AddAuthorization(
-    opt =>
-    {
-        opt.AddPolicy(
-            "BursaPolicy",
-            policy => policy.RequireClaim(ClaimTypes.StateOrProvince, "Bursa")
-        );
-    }
-);
+builder.Services.AddPolicies();
 
 
 var app = builder.Build();
