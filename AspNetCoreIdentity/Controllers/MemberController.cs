@@ -165,5 +165,10 @@ namespace AspNetCoreIdentity.Controllers
         }
 
 
+        public IActionResult AccessDenied(string returnUrl)
+        {
+            return View();
+        }
+
     }
 }

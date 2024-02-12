@@ -1,12 +1,13 @@
 ﻿using AspNetCoreIdentity.Areas.Admin.ViewModels;
 using AspNetCoreIdentity.Models;
-using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreIdentity.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Area("Admin")]
     public class RolesController : Controller
     {
@@ -32,11 +33,14 @@ namespace AspNetCoreIdentity.Areas.Admin.Controllers
             return View(roles);
         }
 
+
+        [Authorize(Roles = "role-actions")]
         public IActionResult AddRole()
         {
             return View();
         }
 
+        [Authorize(Roles = "role-actions")]
         [HttpPost]
         public async Task<IActionResult> AddRole(AddRoleViewModel request)
         {
@@ -53,6 +57,7 @@ namespace AspNetCoreIdentity.Areas.Admin.Controllers
             return RedirectToAction(nameof(RolesController.Index));
         }
 
+        [Authorize(Roles = "role-actions")]
         public async Task<IActionResult> UpdateRole(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
@@ -67,6 +72,7 @@ namespace AspNetCoreIdentity.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "role-actions")]
         public async Task<IActionResult> UpdateRole(UpdateRoleViewModel request)
         {
             if (!ModelState.IsValid) return View();
@@ -87,7 +93,7 @@ namespace AspNetCoreIdentity.Areas.Admin.Controllers
             return RedirectToAction(nameof(RolesController.Index));
         }
 
-
+        [Authorize(Roles = "role-actions")]
         public async Task<IActionResult> DeleteRole(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
@@ -103,7 +109,7 @@ namespace AspNetCoreIdentity.Areas.Admin.Controllers
 
         }
 
-
+        [Authorize(Roles = "role-actions")]
         public async Task<IActionResult> AssignRole(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -128,6 +134,7 @@ namespace AspNetCoreIdentity.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "role-actions")]
         public async Task<IActionResult> AssignRole(string userId,List<AssignRoleViewModel> roles)
         {
             var user = await _userManager.FindByIdAsync(userId);

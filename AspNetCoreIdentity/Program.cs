@@ -50,6 +50,7 @@ builder.Services.ConfigureApplicationCookie(
         };
         opt.LoginPath = "/Home/SignIn";
         opt.LogoutPath = "/Member/Logout";
+        opt.AccessDeniedPath = "/Member/AccessDenied";
         opt.ExpireTimeSpan = TimeSpan.FromDays(60);
         opt.SlidingExpiration = true;
         

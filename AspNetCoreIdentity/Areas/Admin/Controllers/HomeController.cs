@@ -1,5 +1,6 @@
 ﻿using AspNetCoreIdentity.Areas.Admin.ViewModels;
 using AspNetCoreIdentity.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using System.Linq;
 
 namespace AspNetCoreIdentity.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Area("Admin")]
     public class HomeController : Controller
     {
