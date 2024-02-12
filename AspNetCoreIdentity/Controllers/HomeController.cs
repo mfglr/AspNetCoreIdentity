@@ -26,6 +26,10 @@ namespace AspNetCoreIdentity.Controllers
 
         public IActionResult Index()
         {
+
+            var user = User;
+            var claims = User.Claims.ToList();
+
             return View();
         }
 

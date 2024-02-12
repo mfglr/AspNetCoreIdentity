@@ -29,6 +29,7 @@ namespace AspNetCoreIdentity.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.FindByNameAsync(User.Identity!.Name!);
+           
 
             if (user == null) throw new Exception("User not found!");
 
@@ -168,6 +169,21 @@ namespace AspNetCoreIdentity.Controllers
         public IActionResult AccessDenied(string returnUrl)
         {
             return View();
+        }
+
+        public IActionResult DisplayClaims()
+        {
+            var claims = User
+                .Claims
+                .Select(
+                    x => new ClaimViewModel() {
+                        Type = x.Type,
+                        Value = x.Value,
+                        Issuer = x.Issuer
+                    }
+                )
+                .ToList();
+            return View(claims);
         }
 
     }

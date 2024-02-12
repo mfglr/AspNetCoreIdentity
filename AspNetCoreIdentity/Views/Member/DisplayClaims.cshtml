@@ -1,0 +1,39 @@
+﻿@using AspNetCoreIdentity.ViewModels;
+
+@{
+    ViewData["Title"] = "DisplayCliams";
+}
+
+@model List<ClaimViewModel>
+
+
+<h1>Display Cliams</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Issuer</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in Model)
+                {
+                    <tr>
+                        <td>@item.Type</td>
+                        <td>@item.Value</td>
+                        <td>@item.Issuer</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
