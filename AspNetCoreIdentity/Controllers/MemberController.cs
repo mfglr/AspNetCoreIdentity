@@ -186,5 +186,12 @@ namespace AspNetCoreIdentity.Controllers
             return View(claims);
         }
 
+        [Authorize(Policy = "BursaPolicy")]
+        public IActionResult BursaPage()
+        {
+            return View();
+        }
+
+
     }
 }

@@ -1,12 +1,15 @@
+using AspNetCoreIdentity.CalimProvider;
 using AspNetCoreIdentity.Configurations;
 using AspNetCoreIdentity.Extentions;
 using AspNetCoreIdentity.Models;
 using AspNetCoreIdentity.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +36,8 @@ builder.Services.AddSingleton<IEmailService, EmailService>();
 
 builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Directory.GetCurrentDirectory()));
 
+builder.Services.AddScoped<IClaimsTransformation, UserClaimProvider>();
+
 builder.Services.AddControllersWithViews();
 builder.Services
     .AddDbContext<AppDbContext>(
@@ -56,6 +61,18 @@ builder.Services.ConfigureApplicationCookie(
         
     }
 );
+
+
+builder.Services.AddAuthorization(
+    opt =>
+    {
+        opt.AddPolicy(
+            "BursaPolicy",
+            policy => policy.RequireClaim(ClaimTypes.StateOrProvince, "Bursa")
+        );
+    }
+);
+
 
 var app = builder.Build();
 
