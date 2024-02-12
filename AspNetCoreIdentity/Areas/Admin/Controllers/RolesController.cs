@@ -49,7 +49,6 @@ namespace AspNetCoreIdentity.Areas.Admin.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                     return View();
                 }
-            
             }
             return RedirectToAction(nameof(RolesController.Index));
         }
@@ -105,11 +104,12 @@ namespace AspNetCoreIdentity.Areas.Admin.Controllers
         }
 
 
-        public async Task<IActionResult> AssignRole(string userId)
+        public async Task<IActionResult> AssignRole(string id)
         {
-            var user = await _userManager.FindByNameAsync(userId);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null) throw new Exception("The user was not found");
             
+            ViewBag.Id = id;
             
             var roles = await _roleManager.Roles.ToListAsync();
             var userRoles = await _userManager.GetRolesAsync(user);
@@ -122,9 +122,26 @@ namespace AspNetCoreIdentity.Areas.Admin.Controllers
                         Name = role.Name!,
                         Exist = userRoles.Contains(role.Name!)
                     }
-                );
-            
+                )
+                .ToList();
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignRole(string userId,List<AssignRoleViewModel> roles)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) throw new Exception("error");
+
+            foreach (var role in roles)
+            {
+                if (role.Exist)
+                    await _userManager.AddToRoleAsync(user, role.Name);
+                else
+                    await _userManager.RemoveFromRoleAsync(user, role.Name);
+            }
+
+            return RedirectToAction("UserList", "Home");
         }
 
     }

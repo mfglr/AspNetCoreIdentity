@@ -5,7 +5,31 @@
 
 @model List<AssignRoleViewModel>
 
+<div class="row">
+    <div class="col-md-4 offset-md-4">
 
+        <h1>Assignment Role</h1>
 
-<h1>AssignRole</h1>
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <form  asp-controller="Roles" asp-action="AssignRole" asp-route-userId="@ViewBag.Id" method="post">
+            
+            <ul class="list-group list-group-light">
+                @for (var i =0; i< Model.Count;i++)
+                {
+                    <li class="list-group-item">
+                        <input type="hidden" asp-for="@Model[i].Id" />
+                        <input type="hidden" asp-for="@Model[i].Name" />
+                        
+                        <input class="form-check-input me-1" type="checkbox" asp-for="@Model[i].Exist" />
+                        <label class="control-label" asp-for="@Model[i].Exist">@Model[i].Name</label>
+                    </li>
+                }
+            </ul>
+            
+            <button class="btn btn-primary" type="submit">Assign Roles</button>
+        </form>
+    </div>
+</div>
+
 
