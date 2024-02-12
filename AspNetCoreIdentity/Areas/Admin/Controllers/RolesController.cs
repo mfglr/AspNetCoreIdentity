@@ -104,5 +104,28 @@ namespace AspNetCoreIdentity.Areas.Admin.Controllers
 
         }
 
+
+        public async Task<IActionResult> AssignRole(string userId)
+        {
+            var user = await _userManager.FindByNameAsync(userId);
+            if (user == null) throw new Exception("The user was not found");
+            
+            
+            var roles = await _roleManager.Roles.ToListAsync();
+            var userRoles = await _userManager.GetRolesAsync(user);
+            
+            var model = roles
+                .Select(
+                    role => new AssignRoleViewModel()
+                    {
+                        Id = role.Id,
+                        Name = role.Name!,
+                        Exist = userRoles.Contains(role.Name!)
+                    }
+                );
+            
+            return View(model);
+        }
+
     }
 }
