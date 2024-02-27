@@ -9,7 +9,6 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
-using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +43,12 @@ builder.Services
         options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))
     )
     .AddCustomIdentity();
+
+builder.Services.AddAuthentication().AddFacebook(facebookOptions =>
+ {
+     facebookOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"]!;
+     facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"]!;
+ });
 
 builder.Services.ConfigureApplicationCookie(
     opt =>

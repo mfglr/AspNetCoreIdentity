@@ -3,7 +3,9 @@ using AspNetCoreIdentity.Services;
 using AspNetCoreIdentity.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Net;
 using System.Security.Claims;
 
 namespace AspNetCoreIdentity.Controllers
@@ -167,11 +169,55 @@ namespace AspNetCoreIdentity.Controllers
             return RedirectToAction(nameof(HomeController.SignIn));
         }
 
+        [HttpGet]
+        public IActionResult LoginByFacebook()
+        {
+            var redirectUrl = Url.Action("ExternalResponse", "Home");
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties("Facebook", redirectUrl);
+            return new ChallengeResult("Facebook", properties);
+        }
+
+        public async Task<IActionResult> ExternalResponse()
+        {
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+
+            if (info == null)
+                throw new Exception("Third party authentication failed!"    );
+
+            var email = info.Principal.FindFirst(ClaimTypes.Email)!.Value;
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                user = new AppUser()
+                {
+                    Email = email,
+                    UserName = email
+                };
+
+                var result = await _userManager.CreateAsync(user);
+                if (!result.Succeeded)
+                    throw new Exception("");
+
+                result = await _userManager.AddLoginAsync(user, info);
+                if (!result.Succeeded)
+                    throw new Exception("");
+            }
+            await _signInManager.SignInAsync(user, true);
+
+            return RedirectToAction("index");
+
+        }
+
+
 
         public IActionResult SignIn()
         {
             return View();
         }
+
+
+
         [HttpPost]
         public async Task<IActionResult> SignIn(SignInViewModel request,string? returnUrl = null)
         {

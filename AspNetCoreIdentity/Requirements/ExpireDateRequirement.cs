@@ -6,7 +6,6 @@ namespace AspNetCoreIdentity.Requirements
     public class ExpireDateRequirement : IAuthorizationRequirement
     {
 
-
     }
 
     public class ExpireDateRequirementHandler : AuthorizationHandler<ExpireDateRequirement>

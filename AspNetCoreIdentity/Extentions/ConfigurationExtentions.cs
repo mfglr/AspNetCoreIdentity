@@ -23,7 +23,6 @@ namespace AspNetCoreIdentity.Extentions
                     opt =>
                     {
                         opt.User.RequireUniqueEmail = true;
-                        opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz1234567890_";
                         opt.Password.RequiredLength = 9;
                         opt.Password.RequireLowercase = true;
                         opt.Password.RequireUppercase = true;
